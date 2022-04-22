@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import './App.css';
+// import './App.css';
 import { getWeather, getCoord } from './api/api';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
@@ -9,8 +9,6 @@ import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import parse from 'autosuggest-highlight/parse';
 import throttle from 'lodash/throttle';
-
-const GOOGLE_MAPS_API_KEY = 'AIzaSyA3r60x5APqgULIlYTx6MB3o3VW_3F7fsk';
 
 function loadScript(src, position, id) {
   if (!position) {
@@ -26,45 +24,11 @@ function loadScript(src, position, id) {
 
 const autocompleteService = { current: null };
 
-function App() {
-  const [autoLocation, setAutoLocation] = useState(null);
-  const [weather, setWeather] = useState(null);
-  const [coords, setCoords] = useState(null);
+function SearchPlaces() {
   const [value, setValue] = React.useState(null);
   const [inputValue, setInputValue] = React.useState('');
   const [options, setOptions] = React.useState([]);
   const loaded = React.useRef(false);
-
-  useEffect(() => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((position) => {
-        const location = {
-          latitude: position.coords.latitude,
-          longitude: position.coords.longitude,
-        }
-
-        setAutoLocation(location);
-      });
-    }
-  }, []);
-
-  console.log('geolocationUser', autoLocation);
-
-  useEffect(() => {
-    if (coords) {
-      getWeather(coords.results[0].geometry.location.lng, coords.results[0].geometry.location.lat)
-        .then(data => setWeather(data));
-    }
-    
-  }, [coords]);
-
-  console.log('weather', weather);
-
-  // Autocomplite with google places
-  // const [value, setValue] = React.useState(null);
-  // const [inputValue, setInputValue] = React.useState('');
-  // const [options, setOptions] = React.useState([]);
-  // const loaded = React.useRef(false);
 
   if (typeof window !== 'undefined' && !loaded.current) {
     if (!document.querySelector('#google-maps')) {
@@ -195,4 +159,4 @@ function App() {
   );
 }
 
-export default App;
+export default SearchPlaces;

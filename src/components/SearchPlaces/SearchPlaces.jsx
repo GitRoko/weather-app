@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef, useMemo } from 'react';
 // import './App.css';
-import { getWeather, getCoord } from './api/api';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
@@ -24,16 +23,19 @@ function loadScript(src, position, id) {
 
 const autocompleteService = { current: null };
 
-function SearchPlaces() {
-  const [value, setValue] = React.useState(null);
-  const [inputValue, setInputValue] = React.useState('');
-  const [options, setOptions] = React.useState([]);
-  const loaded = React.useRef(false);
+function SearchPlaces({
+  GMAP_KEY_API,
+  setSearchResult,
+  searchResult,
+}) {
+  const [inputValue, setInputValue] = useState('');
+  const [options, setOptions] = useState([]);
+  const loaded = useRef(false);
 
   if (typeof window !== 'undefined' && !loaded.current) {
     if (!document.querySelector('#google-maps')) {
       loadScript(
-        `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAPS_API_KEY}&libraries=places`,
+        `https://maps.googleapis.com/maps/api/js?key=${GMAP_KEY_API}&libraries=places`,
         document.querySelector('head'),
         'google-maps',
       );
@@ -42,7 +44,7 @@ function SearchPlaces() {
     loaded.current = true;
   }
 
-  const fetch = React.useMemo(
+  const fetch = useMemo(
     () =>
       throttle((request, callback) => {
         autocompleteService.current.getPlacePredictions(request, callback);
@@ -50,7 +52,7 @@ function SearchPlaces() {
     [],
   );
 
-  React.useEffect(() => {
+  useEffect(() => {
     let active = true;
 
     if (!autocompleteService.current && window.google) {
@@ -63,7 +65,7 @@ function SearchPlaces() {
     }
 
     if (inputValue === '') {
-      setOptions(value ? [value] : []);
+      setOptions(searchResult ? [searchResult] : []);
       return undefined;
     }
 
@@ -71,8 +73,8 @@ function SearchPlaces() {
       if (active) {
         let newOptions = [];
 
-        if (value) {
-          newOptions = [value];
+        if (searchResult) {
+          newOptions = [searchResult];
         }
 
         if (results) {
@@ -82,42 +84,42 @@ function SearchPlaces() {
         setOptions(newOptions);
       }
     });
-
-    if (value) {
-      getCoord(value.place_id, GOOGLE_MAPS_API_KEY)
-        .then(data => setCoords(data));
-    }
       
       return () => {
         active = false;
       };
-    }, [value, inputValue, fetch]);
-    
-    console.log(coords);
-  // `https://maps.googleapis.com/maps/api/geocode/json?place_id=${value.place_id}&key=${GOOGLE_MAPS_API_KEY}`
+    }, [searchResult, inputValue, fetch]);
 
+  console.log(options);
+    
   return (
     <Autocomplete
       // id="google-map-demo"
       sx={{ width: 300 }}
+      size="small"
       getOptionLabel={(option) =>
         typeof option === 'string' ? option : option.description
       }
-      // filterOptions={(x) => x}
+      filterOptions={(option) => option }
       options={options}
       autoComplete
       includeInputInList
-      // filterSelectedOptions
-      value={value}
+      filterSelectedOptions
+      value={searchResult}
       onChange={(event, newValue) => {
         setOptions(newValue ? [newValue, ...options] : options);
-        setValue(newValue);
+        setSearchResult(newValue);
       }}
       onInputChange={(event, newInputValue) => {
         setInputValue(newInputValue);
       }}
       renderInput={(params) => (
-        <TextField {...params} label="Add a location" fullWidth />
+        <TextField 
+          {...params} 
+          label="Add a location" 
+          fullWidth 
+          variant="standard"
+        />
       )}
       renderOption={(props, option) => {
         const matches = option.structured_formatting.main_text_matched_substrings;

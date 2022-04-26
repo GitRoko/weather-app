@@ -6,8 +6,6 @@ import SearchPlaces from './components/SearchPlaces/SearchPlaces'
 import { WeatherCard } from './components/WeatherCard/WeatherCard';
 import { MiniCard } from './components/MiniCard/MiniCard';
 
-
-
 const GOOGLE_MAPS_API_KEY = 'AIzaSyA3r60x5APqgULIlYTx6MB3o3VW_3F7fsk';
 
 function App() {
@@ -15,6 +13,8 @@ function App() {
   const [weather, setWeather] = useState(null);
   const [coords, setCoords] = useState(null);
   const [searchResult, setSearchResult] = useState(null);
+  const [places, setPlaces] = useState([]);
+
 
   useEffect(() => {
     if (navigator.geolocation) {
@@ -29,7 +29,7 @@ function App() {
     }
   }, []);
 
-  console.log('autoLocation', autoLocation);
+  // console.log('autoLocation', autoLocation);
 
   useEffect(() => {
     if (autoLocation) {
@@ -38,7 +38,7 @@ function App() {
     }
   }, [autoLocation]);
 
-  console.log('getWeather autoLoc', weather);
+  // console.log('getWeather autoLoc', weather);
 
   useEffect(() => {
     if (coords) {
@@ -47,17 +47,16 @@ function App() {
     }
   }, [coords]);
 
-  console.log('getWeather coords', weather);
+  // console.log('getWeather coords', weather);
 
   useEffect(() => {
     if (searchResult) {
       getCoord(searchResult.place_id, GOOGLE_MAPS_API_KEY)
         .then(data => setCoords(data));
     }
-
   }, [searchResult]);
 
-  console.log('searchResult', searchResult);
+  // console.log('searchResult', searchResult);
 
   return (
     <Container maxWidth="xs">
@@ -68,7 +67,7 @@ function App() {
         alignItems="stretch"
         spacing={2}
       >
-        <Grid item xs={12}>
+        <Grid item xs>
           <SearchPlaces
             GMAP_KEY_API={GOOGLE_MAPS_API_KEY}
             setSearchResult={setSearchResult}
@@ -82,10 +81,12 @@ function App() {
             weather={weather}
           />
         </Grid>
-        <Grid item>
+        <Grid item xs>
           <WeatherCard
             searchResult={searchResult}
             weather={weather}
+            setPlaces={setPlaces}
+            places={places}
           />
         </Grid>
       </Grid>

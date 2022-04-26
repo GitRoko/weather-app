@@ -7,14 +7,36 @@ import Button from '@mui/material/Button';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 
-export const MoreMenu = () => {
+export const MoreMenu = ({
+  searchResult,
+  setPlaces,
+  places,
+}) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
+  
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const handleAdd = () => {
+    if (places.length === 0) {
+      setPlaces([...places, searchResult]);
+    } else {
+      const isUniquePlace = places.find(place => place.description === searchResult.description);
+
+      if (!isUniquePlace) {
+        setPlaces([...places, searchResult]);
+      }
+    }
+  };
+
+  const handleDelete = () => {
+    const filteredPlaces = places.filter(place => place.description !== searchResult.description);
+    setPlaces(filteredPlaces);
   };
 
   return (
@@ -38,28 +60,24 @@ export const MoreMenu = () => {
         open={open}
         onClose={handleClose}
       >
-          <MenuItem onClick={handleClose}>
-            <Button
-              onClick={() => {
-                console.log('clicked ADD');
-              }}
-             variant="text"
-             startIcon={<AddIcon />}
-            >
-              ADD
-            </Button>
-          </MenuItem>
-          <MenuItem onClick={handleClose}>
+        <MenuItem onClick={handleClose}>
           <Button
-              onClick={() => {
-                console.log('clicked DELETE');
-              }}
-             variant="text"
-             startIcon={<DeleteIcon />}
-            >
-              DELETE
-            </Button>
-          </MenuItem>
+            onClick={handleAdd}
+            variant="text"
+            startIcon={<AddIcon />}
+          >
+            ADD
+          </Button>
+        </MenuItem>
+        <MenuItem onClick={handleClose}>
+          <Button
+            onClick={handleDelete}
+            variant="text"
+            startIcon={<DeleteIcon />}
+          >
+            DELETE
+          </Button>
+        </MenuItem>
       </Menu>
     </div>
   );

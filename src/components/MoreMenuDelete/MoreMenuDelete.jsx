@@ -5,37 +5,25 @@ import MenuItem from '@mui/material/MenuItem';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import Button from '@mui/material/Button';
 import DeleteIcon from '@mui/icons-material/Delete';
-import AddIcon from '@mui/icons-material/Add';
 
-export const MoreMenu = ({
-  searchResult,
+export const MoreMenuDelete = ({
+  miniCardPlace,
   setPlaces,
-  places,
+  miniCardPlaces,
 }) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
-  
+
   const handleClose = () => {
     setAnchorEl(null);
   };
 
-  const handleAdd = () => {
-    if (places.length === 0) {
-      setPlaces([...places, searchResult]);
-    } else {
-      const isUniquePlace = places.find(place => place.description === searchResult.description);
-
-      if (!isUniquePlace) {
-        setPlaces([...places, searchResult]);
-      }
-    }
-  };
-
   const handleDelete = () => {
-    const filteredPlaces = places.filter(place => place.description !== searchResult.description);
+    console.log('places - ', miniCardPlaces);
+    const filteredPlaces = miniCardPlaces.filter(place => place.description !== miniCardPlace.description);
     setPlaces(filteredPlaces);
   };
 
@@ -60,15 +48,6 @@ export const MoreMenu = ({
         open={open}
         onClose={handleClose}
       >
-        <MenuItem onClick={handleClose}>
-          <Button
-            onClick={handleAdd}
-            variant="text"
-            startIcon={<AddIcon />}
-          >
-            ADD
-          </Button>
-        </MenuItem>
         <MenuItem onClick={handleClose}>
           <Button
             onClick={handleDelete}

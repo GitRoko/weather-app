@@ -1,8 +1,8 @@
 import React from 'react';
 import { Box, Card, CardContent, Typography } from '@mui/material';
 import CardHeader from '@mui/material/CardHeader';
-import { MoreMenu } from '../MoreMenu/MoreMenu';
-import CardActions from '@mui/material/CardActions';
+import { MoreMenuAdd } from '../MoreMenuAdd/MoreMenuAdd';
+// import CardActions from '@mui/material/CardActions';
 
 
 export const WeatherCard = ({
@@ -11,6 +11,7 @@ export const WeatherCard = ({
   setPlaces,
   places,
  }) => {
+
   return (
     <Card sx={{ minWidth: 275 }}>
       {weather &&
@@ -18,14 +19,14 @@ export const WeatherCard = ({
           <CardHeader
             sx={{p:1}}
             action={
-              <MoreMenu
+              <MoreMenuAdd
                 searchResult={searchResult}
                 setPlaces={setPlaces}
                 places={places}
               />
-            }
-          // title="Shrimp and Chorizo Paella"
-          // subheader="September 14, 2016"
+              }
+          // title="Current location"
+            // subheader="Current location"
           />
           <CardContent>
             <Typography

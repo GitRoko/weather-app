@@ -76,10 +76,14 @@ function App() {
           />
         </Grid>
         <Grid item xs>
-          <MiniCard
-            searchResult={searchResult}
-            weather={weather}
-          />
+          {(places.length > 0) && places.map((place, i) => (
+            <MiniCard
+              key={i + 100}
+              miniCardPlace={place}
+              setPlaces={setPlaces}
+              miniCardPlaces={places}
+            />
+          ))}
         </Grid>
         <Grid item xs>
           <WeatherCard

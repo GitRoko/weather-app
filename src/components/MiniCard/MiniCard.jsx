@@ -1,39 +1,48 @@
-import * as React from 'react';
-import { styled } from '@mui/material/styles';
-import { Box } from '@mui/material';
+import React, { useEffect, useState } from 'react';
 import { Grid } from '@mui/material';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
-import Avatar from '@mui/material/Avatar';
-import { MoreMenu } from '../MoreMenu/MoreMenu';
+import { MoreMenuDelete } from '../MoreMenuDelete/MoreMenuDelete';
+import { getWeather, getCoord } from '../../api/api';
 
-
-
-const Img = styled('img')({
-  margin: 'auto',
-  display: 'block',
-  maxWidth: '100%',
-  maxHeight: '100%',
-});
+const GOOGLE_MAPS_API_KEY = 'AIzaSyA3r60x5APqgULIlYTx6MB3o3VW_3F7fsk';
 
 export const MiniCard = ({
-  searchResult,
-  weather,
+  miniCardPlace,
+  miniCardPlaces,
+  setPlaces,
 }) => {
+  const [placeCoords, setPlaceCoords] = useState(null);
+  const [placeWeather, setPlaceWeather] = useState(null);
+
+  useEffect(() => {
+    if (miniCardPlace) {
+      getCoord(miniCardPlace.place_id, GOOGLE_MAPS_API_KEY)
+        .then(data => setPlaceCoords(data));
+    }
+  }, [miniCardPlace]);
+
+  useEffect(() => {
+    if (placeCoords) {
+      getWeather(placeCoords.results[0].geometry.location.lng, placeCoords.results[0].geometry.location.lat)
+        .then(data => setPlaceWeather(data));
+    }
+  }, [placeCoords]);
 
   return (
     <Paper
       sx={{
         mx: 'auto',
         maxWidth: 400,
+        my: 1,
       }}
     >
-      {weather &&       
+      {placeWeather &&       
       <Grid container wrap="nowrap" spacing={0}>
         <Grid item alignSelf="center">
           {/* <Box spacing={0}> */}
             <img
-              src={weather.weather[0].icon}
+              src={placeWeather.weather[0].icon}
               alt={'weather'}
               style={{ width: 40, height: 32, }}
             />
@@ -41,16 +50,20 @@ export const MiniCard = ({
         </Grid>
         <Grid item xs zeroMinWidth alignSelf="center">
           <Typography noWrap>
-          {searchResult && weather ? searchResult.structured_formatting.main_text : weather.name}
+          {miniCardPlace && placeWeather ? miniCardPlace.structured_formatting.main_text : placeWeather.name}
           </Typography>
         </Grid>
         <Grid item alignSelf="center">
           <Typography>
-            {weather && Math.round(weather.main.temp)}°
+            {placeWeather && Math.round(placeWeather.main.temp)}°
           </Typography>
         </Grid>
         <Grid item>
-          <MoreMenu />
+          <MoreMenuDelete
+            setPlaces={setPlaces}
+            miniCardPlaces={miniCardPlaces}
+            miniCardPlace={miniCardPlace}
+          />         
         </Grid>
       </Grid>}
     </Paper>

@@ -95,12 +95,13 @@ function SearchPlaces({
   return (
     <Autocomplete
       // id="google-map-demo"
-      sx={{ width: 300 }}
+      sx={{ width: '100%' }}
       size="small"
+      noOptionsText={'Enter some place'}
       getOptionLabel={(option) =>
         typeof option === 'string' ? option : option.description
       }
-      filterOptions={(option) => option }
+      filterOptions={(x) => x }
       options={options}
       autoComplete
       includeInputInList
@@ -116,7 +117,7 @@ function SearchPlaces({
       renderInput={(params) => (
         <TextField 
           {...params} 
-          label="Add a location" 
+          label="Search place" 
           fullWidth 
           variant="standard"
         />

@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import './App.css';
+import { Container, Grid } from '@mui/material';
 import { getWeather, getCoord } from './api/api';
 import SearchPlaces from './components/SearchPlaces/SearchPlaces'
-import { Container, Grid } from '@mui/material';
 import { WeatherCard } from './components/WeatherCard/WeatherCard';
+import { MiniCard } from './components/MiniCard/MiniCard';
+
+
 
 const GOOGLE_MAPS_API_KEY = 'AIzaSyA3r60x5APqgULIlYTx6MB3o3VW_3F7fsk';
 
@@ -62,7 +65,7 @@ function App() {
         container
         direction="column"
         justifyContent="flex-start"
-        alignItems="center"
+        alignItems="stretch"
         spacing={2}
       >
         <Grid item xs={12}>
@@ -73,17 +76,19 @@ function App() {
             setCoords={setCoords}
           />
         </Grid>
-        <Grid item xs={12}>
-          Pagination
+        <Grid item xs>
+          <MiniCard
+            searchResult={searchResult}
+            weather={weather}
+          />
         </Grid>
-        <Grid item xs={12}>
+        <Grid item>
           <WeatherCard
             searchResult={searchResult}
             weather={weather}
           />
         </Grid>
       </Grid>
-
     </Container>
   );
 }

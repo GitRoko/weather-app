@@ -143,7 +143,6 @@ function App() {
                 <Box sx={{ mx: 'auto' }}>
 
                 <Pagination
-                  justifyContent='center'
                   count={pagesPlaces.length}
                   page={page}
                   onChange={handleChange}

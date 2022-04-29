@@ -8,33 +8,9 @@ import { WeatherCard } from './components/WeatherCard/WeatherCard';
 import { MiniCard } from './components/MiniCard/MiniCard';
 import Pagination from '@mui/material/Pagination';
 import Box from '@mui/material/Box';
+import { Oval } from 'react-loader-spinner';
 
 const GOOGLE_MAPS_API_KEY = 'AIzaSyA3r60x5APqgULIlYTx6MB3o3VW_3F7fsk';
-
-function storageAvailable(type) {
-  var storage;
-  try {
-      storage = window[type];
-      var x = '__storage_test__';
-      storage.setItem(x, x);
-      storage.removeItem(x);
-      return true;
-  }
-  catch(e) {
-      return e instanceof DOMException && (
-          // everything except Firefox
-          e.code === 22 ||
-          // Firefox
-          e.code === 1014 ||
-          // test name field too, because code might not be present
-          // everything except Firefox
-          e.name === 'QuotaExceededError' ||
-          // Firefox
-          e.name === 'NS_ERROR_DOM_QUOTA_REACHED') &&
-          // acknowledge QuotaExceededError only if there's something already stored
-          (storage && storage.length !== 0);
-  }
-}
 
 function App() {
   const [autoLocation, setAutoLocation] = useState(null);
@@ -57,7 +33,7 @@ function App() {
       });
     }
 
-    if (storageAvailable('localStorage') && localStorage.getItem('localPlaces')) {
+    if (localStorage.getItem('localPlaces')) {
 
       setPlaces(JSON.parse(localStorage.getItem('localPlaces')));
     }
@@ -82,7 +58,7 @@ function App() {
         });
     }
   }, [searchResult]);
-  
+
   useEffect(() => {
 
     if (coords) {
@@ -115,7 +91,7 @@ function App() {
       setPagesPlaces(arr);
     }
   }, [places]);
-  
+
   const handleChange = (event, value) => {
     setPage(value);
   };
@@ -143,7 +119,7 @@ function App() {
             justifyContent="center"
             alignItems="stretch"
             spacing={0.5}
-            
+
           >
 
             {(places.length > 0 && places.length <= 5)
@@ -156,8 +132,18 @@ function App() {
                 />
               ))}
 
+            {/* <Oval
+              ariaLabel="loading-indicator"
+              height={50}
+              width={50}
+              strokeWidth={5}
+              strokeWidthSecondary={1}
+              color="#000"
+              secondaryColor="#fff"
+            /> */}
+
             {(pagesPlaces.length > 0) &&
-              <>
+              (<>
                 {pagesPlaces[page - 1].map((place, i) => (
                   <MiniCard
                     key={i + 100}
@@ -166,15 +152,15 @@ function App() {
                     miniCardPlaces={places}
                   />
                 ))}
-                <Box sx={{ mx: 'auto' }}>
+                <Box sx={{ display: 'flex', justifyContent: 'center' }}>
 
-                <Pagination
-                  count={pagesPlaces.length}
-                  page={page}
-                  onChange={handleChange}
-                />
+                  <Pagination
+                    count={pagesPlaces.length}
+                    page={page}
+                    onChange={handleChange}
+                  />
                 </Box>
-              </>}
+              </>)}
 
           </Stack>
         </Grid>

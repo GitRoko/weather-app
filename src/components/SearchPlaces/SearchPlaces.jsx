@@ -90,8 +90,6 @@ function SearchPlaces({
       };
     }, [searchResult, inputValue, fetch]);
 
-  console.log(options);
-    
   return (
     <Autocomplete
       // id="google-map-demo"
@@ -141,7 +139,7 @@ function SearchPlaces({
               <Grid item xs>
                 {parts.map((part, index) => (
                   <span
-                    key={index + 1000}
+                    key={part.text}
                     style={{
                       fontWeight: part.highlight ? 700 : 400,
                     }}

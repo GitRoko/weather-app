@@ -24,7 +24,7 @@ export const MoreMenuDelete = ({
   const handleDelete = () => {
     const filteredPlaces = miniCardPlaces.filter(place => place.description !== miniCardPlace.description);
     localStorage.setItem('localPlaces', JSON.stringify(filteredPlaces));
-    setPlaces(JSON.parse(localStorage.getItem('localPlaces')));
+    setPlaces(filteredPlaces);
   };
 
   return (

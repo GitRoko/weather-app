@@ -2,8 +2,6 @@ import React from 'react';
 import { Box, Card, CardContent, Typography } from '@mui/material';
 import CardHeader from '@mui/material/CardHeader';
 import { MoreMenuAdd } from '../MoreMenuAdd/MoreMenuAdd';
-// import CardActions from '@mui/material/CardActions';
-
 
 export const WeatherCard = ({
   searchResult,
@@ -17,16 +15,16 @@ export const WeatherCard = ({
       {weather &&
         <>
           <CardHeader
-            sx={{p:1}}
+            sx={{p:1, textAlign: 'left'}}
             action={
-              <MoreMenuAdd
+              (searchResult) 
+                && <MoreMenuAdd
                 searchResult={searchResult}
                 setPlaces={setPlaces}
                 places={places}
-              />
+            />
               }
-          // title="Current location"
-            // subheader="Current location"
+            subheader="Current location:"
           />
           <CardContent>
             <Typography

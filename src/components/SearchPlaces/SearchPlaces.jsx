@@ -141,7 +141,7 @@ function SearchPlaces({
               <Grid item xs>
                 {parts.map((part, index) => (
                   <span
-                    key={index}
+                    key={index + 1000}
                     style={{
                       fontWeight: part.highlight ? 700 : 400,
                     }}

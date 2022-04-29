@@ -22,9 +22,9 @@ export const MoreMenuDelete = ({
   };
 
   const handleDelete = () => {
-    console.log('places - ', miniCardPlaces);
     const filteredPlaces = miniCardPlaces.filter(place => place.description !== miniCardPlace.description);
-    setPlaces(filteredPlaces);
+    localStorage.setItem('localPlaces', JSON.stringify(filteredPlaces));
+    setPlaces(JSON.parse(localStorage.getItem('localPlaces')));
   };
 
   return (

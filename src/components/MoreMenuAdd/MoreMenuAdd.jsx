@@ -23,12 +23,14 @@ export const MoreMenuAdd = ({
 
   const handleAdd = () => {
     if (places.length === 0) {
-      setPlaces([...places, searchResult]);
+      localStorage.setItem('localPlaces', JSON.stringify([...places, searchResult]));
+      setPlaces(JSON.parse(localStorage.getItem('localPlaces')));
     } else {
-      const isUniquePlace = places.find(place => place.description === searchResult.description);
+      const ifExist = places.find(place => place.description === searchResult.description);
 
-      if (!isUniquePlace) {
-        setPlaces([...places, searchResult]);
+      if (!ifExist) {
+        localStorage.setItem('localPlaces', JSON.stringify([...places, searchResult]));
+        setPlaces(JSON.parse(localStorage.getItem('localPlaces')));
       }
     }
   };

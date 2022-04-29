@@ -25,7 +25,14 @@ export const MiniCard = ({
   useEffect(() => {
     if (placeCoords) {
       getWeather(placeCoords.results[0].geometry.location.lng, placeCoords.results[0].geometry.location.lat)
-        .then(data => setPlaceWeather(data));
+        .then(data => {
+          if (data.name === "Shuzenji") {
+            setPlaceCoords(placeCoords);
+          } else {
+            setPlaceWeather(data);
+          }
+        })
+        // .then(data => setPlaceWeather(data));
     }
   }, [placeCoords]);
 
@@ -33,20 +40,18 @@ export const MiniCard = ({
     <Paper
       sx={{
         mx: 'auto',
-        maxWidth: 400,
         my: 1,
+        width: '100%',
       }}
     >
       {placeWeather &&       
       <Grid container wrap="nowrap" spacing={0}>
         <Grid item alignSelf="center">
-          {/* <Box spacing={0}> */}
             <img
               src={placeWeather.weather[0].icon}
               alt={'weather'}
               style={{ width: 40, height: 32, }}
             />
-          {/* </Box> */}
         </Grid>
         <Grid item xs zeroMinWidth alignSelf="center">
           <Typography noWrap>
